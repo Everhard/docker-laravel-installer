@@ -27,6 +27,11 @@ docker run --rm -it \
 > Replace `example` with the name of the folder where your new Laravel project should be created.
 > The folder will be created inside your current working directory.
 
+Check the Laravel Installer version with:
+```bash
+docker run --rm steadfast/docker-laravel-installer --version
+```
+
 ## Demo
 ![Demo](docs/demo.gif)
 

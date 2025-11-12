@@ -1,5 +1,5 @@
 # Laravel Installer - Docker Image
-![Static Badge](https://img.shields.io/badge/laravel_installer-5.21.0-blue)
+![Static Badge](https://img.shields.io/badge/laravel_installer-5.23.0-blue)
 ![Static Badge](https://img.shields.io/badge/php-8.4-blue)
 ![Docker Pulls](https://img.shields.io/docker/pulls/steadfast/docker-laravel-installer)
 ![GitHub License](https://img.shields.io/github/license/everhard/docker-laravel-installer)

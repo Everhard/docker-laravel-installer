@@ -5,7 +5,7 @@ LABEL maintainer="Andrew Dorokhov <andrew@dorokhov.dev>"
 LABEL description="Laravel Installer image based on the official Laravel Sail Docker image."
 
 # Define Laravel installer version
-ARG INSTALLER_VERSION=v5.23.2
+ARG INSTALLER_VERSION=v5.24.2
 
 # Clone Laravel installer and install dependencies
 RUN rm -rf /laravel-installer \

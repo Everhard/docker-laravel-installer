@@ -1,0 +1,71 @@
+name: Check for Laravel Installer updates
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: check-update
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      updated: ${{ steps.check.outputs.updated }}
+      version: ${{ steps.check.outputs.version }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Compare installed and latest versions
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest=$(gh api repos/laravel/installer/releases/latest --jq .tag_name)
+          current=$(grep -oP '^ARG INSTALLER_VERSION=\K\S+' Dockerfile)
+          echo "Current: $current, latest: $latest"
+
+          if ! [[ "$latest" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Unexpected release tag format: $latest"
+            exit 1
+          fi
+
+          newest=$(printf '%s\n%s\n' "$current" "$latest" | sort -V | tail -n1)
+          if [ "$latest" = "$current" ] || [ "$newest" != "$latest" ]; then
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "updated=true" >> "$GITHUB_OUTPUT"
+          echo "version=${latest#v}" >> "$GITHUB_OUTPUT"
+          echo "tag=$latest" >> "$GITHUB_OUTPUT"
+
+      - name: Commit new version
+        if: steps.check.outputs.updated == 'true'
+        env:
+          TAG: ${{ steps.check.outputs.tag }}
+          VERSION: ${{ steps.check.outputs.version }}
+        run: |
+          sed -i "s/^ARG INSTALLER_VERSION=.*/ARG INSTALLER_VERSION=${TAG}/" Dockerfile
+          sed -i -E "s/laravel_installer-[0-9.]+-blue/laravel_installer-${VERSION}-blue/" README.md
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Update Laravel Installer to version ${VERSION}."
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+  # Commits pushed with GITHUB_TOKEN don't trigger other workflows, so call the build explicitly.
+  build:
+    needs: check
+    if: needs.check.outputs.updated == 'true'
+    uses: ./.github/workflows/docker-image.yml
+    with:
+      ref: ${{ github.ref_name }}
+    secrets: inherit

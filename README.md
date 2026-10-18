@@ -32,6 +32,17 @@ Check the Laravel Installer version with:
 docker run --rm steadfast/docker-laravel-installer --version
 ```
 
+## Tags
+
+The image is rebuilt automatically whenever a new [Laravel Installer release](https://github.com/laravel/installer/releases) is published.
+
+| Tag      | Description                              |
+|----------|------------------------------------------|
+| `latest` | The most recent Laravel Installer        |
+| `5`      | The latest `5.x.x` release               |
+| `5.28`   | The latest `5.28.x` release              |
+| `5.28.1` | Exact Laravel Installer version (pinned) |
+
 ## Demo
 ![Demo](docs/demo.gif)
 

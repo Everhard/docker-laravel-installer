@@ -2,7 +2,7 @@
 
 # Laravel Installer for Docker
 
-![Static Badge](https://img.shields.io/badge/laravel_installer-5.32.0-blue) ![Static Badge](https://img.shields.io/badge/php-8.4-blue) ![Docker Pulls](https://img.shields.io/docker/pulls/steadfast/docker-laravel-installer) ![GitHub License](https://img.shields.io/github/license/everhard/docker-laravel-installer)
+![Static Badge](https://img.shields.io/badge/laravel_installer-5.33.0-blue) ![Static Badge](https://img.shields.io/badge/php-8.4-blue) ![Docker Pulls](https://img.shields.io/docker/pulls/steadfast/docker-laravel-installer) ![GitHub License](https://img.shields.io/github/license/everhard/docker-laravel-installer)
 
 **Start a new Laravel project with one `docker run`.<br>You need only Docker, and the installer inside is always the latest release.**
 
